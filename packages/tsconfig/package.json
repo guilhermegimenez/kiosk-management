@@ -2,9 +2,13 @@
   "name": "tsconfig",
   "version": "0.0.0",
   "private": true,
+  "devDependencies": {
+    "fastify-tsconfig": "^1.0.1"
+  },
   "files": [
     "base.json",
     "nextjs.json",
+    "fastify.json",
     "react-library.json"
   ]
 }

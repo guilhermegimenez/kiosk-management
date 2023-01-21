@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "fastify-tsconfig",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "target": "es2022",
+    "lib": [
+      "es2022"
+    ],
+    "sourceMap": true
+  },
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
