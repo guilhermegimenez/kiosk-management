@@ -19,15 +19,19 @@ const app: FastifyPluginAsync<AppOptions> = async (
 
   // Place here your custom code!
   void fastify.register(AutoLoad, {
+    dir: join(__dirname, 'schemas'),
+    options: opts
+  })
+
+  void fastify.register(AutoLoad, {
     dir: join(__dirname, 'services'),
     options: opts
   })
 
   void fastify.register(AutoLoad, {
-    dir: join(__dirname, 'schemas'),
+    dir: join(__dirname, 'events'),
     options: opts
   })
-
 
   // Do not touch the following lines
 

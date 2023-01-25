@@ -3,6 +3,10 @@ import fp from 'fastify-plugin'
 import { IKiosk } from '../interfaces/kioskInterface';
 // import { Kiosk } from '../types/kioskType';
 
+// Environments Variables
+const KIOSKS_COLLECITON_NAME = process.env.KIOSK_COLLECTION_NAME || 'kiosks';
+
+
 export interface IKioskServiceOptions {
     // Specify Support plugin options here
 }
@@ -20,38 +24,42 @@ export interface IKioskService {
 // to export the decorators to the outer scope
 export default fp<IKioskServiceOptions>(async (fastify, opts) => {
 
+    // Collection set in this scope to reuse in the methods
+
+
     const kioskService: IKioskService = {
         listAll: async (): Promise<IKiosk[] | []> => {
-            const colletion = fastify.mongo.db?.collection('kiosks');
+            const colletion = fastify.mongo.db?.collection(KIOSKS_COLLECITON_NAME);
             const result = await colletion?.find<IKiosk>({});
             const list = await result?.toArray();
             return list !== undefined ? list : [];
         },
         getById: async (id): Promise<IKiosk | null> => {
-            const colletion = fastify.mongo.db?.collection('kiosks');
+            const colletion = fastify.mongo.db?.collection(KIOSKS_COLLECITON_NAME);
             const result = await colletion?.findOne<IKiosk | null>({ _id: new ObjectId(id) });
             return result !== undefined ? result : null;
         },
         create: async (kiosk): Promise<IKiosk | null> => {
             try {
-                const colletion = fastify.mongo.db?.collection('kiosks');
+                const colletion = fastify.mongo.db?.collection(KIOSKS_COLLECITON_NAME);
                 const result = await colletion?.insertOne(kiosk);
-
                 const newKiosk = await colletion?.findOne<IKiosk>({
                     _id: result?.insertedId
                 })
 
-                if (newKiosk !== undefined)
+                if (newKiosk !== undefined) {
                     return newKiosk;
-                else
+                } else {
                     throw Error('Error to recovery new kiosk document')
+                }
+
             } catch (error) {
                 throw error;
             }
         },
         update: async (id, kiosk): Promise<string> => {
             try {
-                const colletion = fastify.mongo.db?.collection('kiosks');
+                const colletion = fastify.mongo.db?.collection(KIOSKS_COLLECITON_NAME);
                 const result = await colletion?.findOneAndUpdate({
                     _id: new ObjectId(id)
                 }, { $set: { ...kiosk } })
@@ -66,7 +74,7 @@ export default fp<IKioskServiceOptions>(async (fastify, opts) => {
         },
         remove: async (id): Promise<string> => {
             try {
-                const colletion = fastify.mongo.db?.collection('kiosks');
+                const colletion = fastify.mongo.db?.collection(KIOSKS_COLLECITON_NAME);
                 const result = await colletion?.findOneAndDelete({
                     _id: new ObjectId(id)
                 })

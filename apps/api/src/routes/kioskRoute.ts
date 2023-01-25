@@ -1,14 +1,10 @@
-// import { Kiosk } from './../types/kioskType';
-// import fp from 'fastify-plugin';
 import { FastifyPluginAsync } from 'fastify'
 import { IKiosk } from '../interfaces/kioskInterface';
-// import { create, getById } from '../services/kiosk';
-
 interface IParams {
     id: string;
 }
 
-const kiosk: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
+const kioskRoute: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
 
     fastify.get('/kiosks',
         {
@@ -33,7 +29,6 @@ const kiosk: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
             return await fastify.kioskService.listAll()
         }
     )
-
 
     fastify.get<{ Params: IParams }>('/kiosks/:id',
         {
@@ -228,4 +223,4 @@ const kiosk: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
     )
 }
 
-export default kiosk;
+export default kioskRoute;
