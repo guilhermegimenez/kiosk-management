@@ -1,4 +1,3 @@
-// import { swaggerUi } from '@fastify/swagger-ui';
 import { join } from 'path';
 import AutoLoad, { AutoloadPluginOptions } from '@fastify/autoload';
 import { FastifyPluginAsync } from 'fastify';
@@ -11,13 +10,14 @@ export type AppOptions = {
 // Pass --options via CLI arguments in command to enable these options.
 const options: AppOptions = {
 }
-
+//instance: FastifyInstance<Server, RawRequestDefaultExpression<Server>, RawReplyDefaultExpression<Server>, Logger, TypeProvider>, opts: Options
 const app: FastifyPluginAsync<AppOptions> = async (
   fastify,
   opts
 ): Promise<void> => {
-
   // Place here your custom code!
+
+  // Do not touch the following lines
   void fastify.register(AutoLoad, {
     dir: join(__dirname, 'schemas'),
     options: opts
@@ -32,9 +32,6 @@ const app: FastifyPluginAsync<AppOptions> = async (
     dir: join(__dirname, 'events'),
     options: opts
   })
-
-  // Do not touch the following lines
-
   // This loads all plugins defined in plugins
   // those should be support plugins that are reused
   // through your application
