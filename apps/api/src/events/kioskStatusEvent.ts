@@ -60,7 +60,7 @@ export default fp<KioskStatusEventOptions>(async (fastify, opts) => {
             }
 
 
-        }, 1500))
+        }, 60000))
 })
 
 // declare module 'fastify' {
