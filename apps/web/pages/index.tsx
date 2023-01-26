@@ -60,7 +60,7 @@ export default function KioskList(props: IKioskList) {
             {
               props.list.map((kiosk) => {
                 return (
-                  <tr className="bg-white border-b dark:bg-gray-100 dark:border-gray-100 hover:bg-gray-50 dark:hover:bg-gray-200">
+                  <tr key={kiosk._id} className="bg-white border-b dark:bg-gray-100 dark:border-gray-100 hover:bg-gray-50 dark:hover:bg-gray-200">
                     <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-gray-600">
                       {kiosk._id}
                     </th>
@@ -82,7 +82,7 @@ export default function KioskList(props: IKioskList) {
                       <a href={`/kiosk/${kiosk._id}`} className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
                     </td>
                     <td className="px-6 py-4 text-right">
-                      <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline">Remove</a>
+                      <a href={`/kiosk/confirm/${kiosk._id}`} className="font-medium text-red-600 dark:text-red-500 hover:underline">Remove</a>
                     </td>
                   </tr>
                 )
@@ -90,8 +90,16 @@ export default function KioskList(props: IKioskList) {
             }
           </tbody>
         </table>
+        <div className="content-end py-3 pl-7">
+          <a href='/kiosk'>
+            <button
+              className="text-white self-end bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-7 py-2  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+              type="button">
+              New
+            </button>
+          </a>
+        </div>
       </div>
-
     </div>
   );
 }

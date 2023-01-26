@@ -13,42 +13,34 @@ interface IKiosk {
 }
 
 export default function Kiosk() {
-    const { query, back } = useRouter();
+    const { back } = useRouter();
 
     const [kiosk, setKiosk] = useState<IKiosk>({
+        _id: '',
         description: '',
         isKioskClosed: true,
         storeClosesAt: '00:00',
         storeOpensAt: '00:00'
     });
 
-    // Wait and get Kiosk by Id
-    useEffect(() => {
-        if (query.id !== undefined) {
-            const url = `http://localhost:3030/kiosks/${query.id}`;
-            axios.get(url).then(response => {
-                // console.log(response.data);
-                setKiosk(response.data)
-            })
-        }
-
-    }, [query])
-
-    async function hadleUpdateKiosk(event: FormEvent) {
+    async function hadleCreateKiosk(event: FormEvent) {
         event.preventDefault();
 
+        const formData = new FormData(event.target as HTMLFormElement);
+        const data = Object.fromEntries(formData);
+
         try {
-            await axios.put(`http://localhost:3030/kiosks/${kiosk._id}`, {
-                description: kiosk.description,
-                storeOpensAt: kiosk.storeOpensAt,
-                storeClosesAt: kiosk.storeClosesAt,
-                isKioskClosed: kiosk.isKioskClosed
+            await axios.post(`http://localhost:3030/kiosks`, {
+                description: data.description,
+                storeOpensAt: `${data.storeOpensAt}:00`,
+                storeClosesAt: `${data.storeClosesAt}:00`,
+                isKioskClosed: false
             });
-            alert('Kiosk updated!')
+            alert('Kiosk created!')
             back()
             // NextResponse.redirect('http://localhost:3000')
         } catch (error) {
-            alert('Erro to update Kiosk.')
+            alert('Erro to create Kiosk.')
             console.log(error)
         }
     }
@@ -57,7 +49,7 @@ export default function Kiosk() {
         <div className="max-w-[1344px] mx-auto flex flex-col items-center my-20">
             <h1 className='text-6xl font-black mt-20 '>Kiosk Management</h1>
             <div className='p-7 max-w-[720px] mx-auto flex flex-col items-center my-20 relative overflow-x-auto shadow-md sm:rounded-lg'>
-                <form onSubmit={hadleUpdateKiosk} className="w-full max-w-lg">
+                <form onSubmit={hadleCreateKiosk} className="w-full max-w-lg">
                     <div className="flex flex-wrap -mx-3 mb-6">
                         <div className="w-full px-3 mb-6 md:mb-0">
                             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
